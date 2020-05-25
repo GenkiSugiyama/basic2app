@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component } from 'react';
+import { connect } from 'react-redux';
+import { setName, setAge, setNull } from './actions/userActions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  clickSetName() {
+    this.props.setName("Taro Yamada");
+  }
+
+  clickSetAge() {
+    this.props.setAge(30);
+  }
+
+  clickSetNull() {
+    this.props.SetNull();
+  }
+
+  render() {
+    return(
+      <div>
+        <button onClick={this.clickSetName.bind(this)}>Set Name</button>
+        {this.props.name} <br />
+        <button onClick={this.clickSetAge.bind(this)}>Set Age</button>
+        {this.props.age} <br />
+        <button onClick={this.props.setNull.bind(this)}>Reset</button>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    name: state.name,
+    age: state.age
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setName: (name) => dispatch(setName(name)),
+    setAge: (age) => dispatch(setAge(age)),
+    setNull: () => dispatch(setNull())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App)
